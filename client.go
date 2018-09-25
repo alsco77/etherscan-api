@@ -48,6 +48,17 @@ func New(network Network, APIKey string) *Client {
 	}
 }
 
+// NewG initialize a new etherscan API client for g cloud
+// please use pre-defined network value
+func NewG(network Network, APIKey string, httpC *http.Client) *Client {
+	return &Client{
+		coon:    httpC,
+		network: network,
+		key:     APIKey,
+		baseURL: fmt.Sprintf(`https://%s.etherscan.io/api?`, network.SubDomain()),
+	}
+}
+
 // call does almost all the dirty work.
 func (c *Client) call(module, action string, param map[string]interface{}, outcome interface{}) (err error) {
 	// fire hooks if in need
